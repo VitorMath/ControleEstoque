@@ -66,9 +66,13 @@ public class Conexao {
 
         Vector objeto = new Vector();
         while (rs.next()) {
-            objeto.add(rs.getArray("nome"));
+            objeto.add(rs.getString("nome"));
 
         }
+        
+        System.out.println(objeto.size());
+        
+        
         System.out.println(objeto.toString());
         
         return objeto.toString();
