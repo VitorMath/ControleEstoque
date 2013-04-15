@@ -36,7 +36,6 @@ public class Conexao {
     private Statement stm;
     public static String ClienteAntesEditar;
     public static int total;
-    
 
     public void SQLite() throws SQLException, ClassNotFoundException {
         Class.forName("org.sqlite.JDBC");
@@ -69,12 +68,12 @@ public class Conexao {
             objeto.add(rs.getString("nome"));
 
         }
-        
+
         System.out.println(objeto.size());
-        
-        
+
+
         System.out.println(objeto.toString());
-        
+
         return objeto.toString();
     }
 
@@ -90,6 +89,35 @@ public class Conexao {
 
         JOptionPane.showMessageDialog(null, "Valores inseridos com sucesso.");
 
+    }
+
+    public String getTabelaEstoque() throws SQLException, ClassNotFoundException {
+
+        Vector id = new Vector();
+        Vector nome = new Vector();
+        Vector quant = new Vector();
+        Vector descri = new Vector();
+
+        this.SQLite();
+        this.stm = this.conn.createStatement();
+
+        String sql = "SELECT * FROM produtos";
+        ResultSet rs = stm.executeQuery(sql);
+
+
+        while (rs.next()) {
+            id.add(rs.getString("id"));
+            nome.add(rs.getString("nome"));
+            quant.add(rs.getString("descricao"));  //Esta invertido por que assim funciona e ponto!!!
+            descri.add(rs.getString("quant"));
+        }
+
+        int tamanhoVetor = nome.size();
+
+        for (int i = 0; i < tamanhoVetor; i++) {
+            ((DefaultTableModel) Janela.tabelaEstoque.getModel()).addRow(new String[]{id.get(i).toString(), nome.get(i).toString(), quant.get(i).toString(), descri.get(i).toString()});
+        }
+        return null;
     }
 }
 //public static String getConnection(String comand) throws SQLException {

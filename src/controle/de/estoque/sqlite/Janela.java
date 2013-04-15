@@ -4,6 +4,12 @@
  */
 package controle.de.estoque.sqlite;
 
+import java.sql.SQLException;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author vitorbrito
@@ -73,11 +79,11 @@ public class Janela extends javax.swing.JFrame {
         btnFiltrar.setText("Filtrar");
 
         tabelaEstoque.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+            new Object [][]{
+                //        {null, null, null, null},
+                //        {null, null, null, null},
+                //        {null, null, null, null},
+                //        {null, null, null, null}
             },
             new String [] {
                 "ID", "Nome", "Quantidade", "Dados"
@@ -360,7 +366,22 @@ public class Janela extends javax.swing.JFrame {
     private void btnAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtualizarActionPerformed
         // TODO add your handling code here:
         
-        tabelaEstoque.setValueAt("Hello!", 1, 2);
+        //tabelaEstoque.setValueAt("Hello!", 1, 2);
+     
+        //((DefaultTableModel)tabelaEstoque.getModel()).addRow(vetor); 
+
+        int rows = tabelaEstoque.getRowCount();
+
+        for (int i = 0; i < rows; i++) {
+            ((DefaultTableModel)tabelaEstoque.getModel()).removeRow(0);
+        }
+        
+        Conexao dbCon = new Conexao();
+        try {            
+            dbCon.getTabelaEstoque();
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(Janela.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }//GEN-LAST:event_btnAtualizarActionPerformed
 
@@ -429,6 +450,6 @@ public class Janela extends javax.swing.JFrame {
     private javax.swing.ButtonGroup radioGroup;
     private javax.swing.JScrollPane scrollPane;
     private javax.swing.JTabbedPane tabEstoque;
-    private javax.swing.JTable tabelaEstoque;
+    public static javax.swing.JTable tabelaEstoque;
     // End of variables declaration//GEN-END:variables
 }
