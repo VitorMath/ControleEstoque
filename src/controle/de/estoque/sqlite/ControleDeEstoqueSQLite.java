@@ -19,9 +19,8 @@ public class ControleDeEstoqueSQLite {
         // TODO code application logic here
         Conexao dbCon = new Conexao();
         dbCon.initDB();
-        //new Cadastro().setVisible(true);
-        
-        new Janela().setVisible(true);
+
+        new Login().setVisible(true);
                
     }
 }

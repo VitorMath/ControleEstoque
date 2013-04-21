@@ -4,8 +4,6 @@
  */
 package controle.de.estoque.sqlite;
 
-
-
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,6 +13,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -22,6 +22,7 @@ import java.io.PrintWriter;
  */
 public class Cadastro extends javax.swing.JFrame {
 
+    
     /**
      * Creates new form Cadastro
      */
@@ -46,8 +47,8 @@ public class Cadastro extends javax.swing.JFrame {
         btnCadastrar = new javax.swing.JButton();
         fieldNome = new javax.swing.JTextField();
         fieldQuant = new javax.swing.JTextField();
-        fieldDesc = new javax.swing.JTextField();
-        btnSelect = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        fieldDesc = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -55,7 +56,7 @@ public class Cadastro extends javax.swing.JFrame {
 
         jLabel2.setText("Nome:");
 
-        jLabel3.setText("Quantidade:");
+        jLabel3.setText("Quant Inicial:");
 
         jLabel4.setText("Descrição:");
 
@@ -78,18 +79,9 @@ public class Cadastro extends javax.swing.JFrame {
             }
         });
 
-        fieldDesc.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fieldDescActionPerformed(evt);
-            }
-        });
-
-        btnSelect.setText("SELECT");
-        btnSelect.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSelectActionPerformed(evt);
-            }
-        });
+        fieldDesc.setColumns(20);
+        fieldDesc.setRows(5);
+        jScrollPane1.setViewportView(fieldDesc);
 
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -98,30 +90,26 @@ public class Cadastro extends javax.swing.JFrame {
             .add(jPanel1Layout.createSequentialGroup()
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jPanel1Layout.createSequentialGroup()
-                        .add(17, 17, 17)
-                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                            .add(jPanel1Layout.createSequentialGroup()
-                                .add(6, 6, 6)
-                                .add(jLabel4)
-                                .add(18, 18, 18)
-                                .add(fieldDesc, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE))
-                            .add(jPanel1Layout.createSequentialGroup()
-                                .add(jLabel3)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                                    .add(fieldNome, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
-                                    .add(fieldQuant)))))
-                    .add(jPanel1Layout.createSequentialGroup()
-                        .add(105, 105, 105)
-                        .add(btnCadastrar)
-                        .add(41, 41, 41)
-                        .add(btnSelect))
-                    .add(jPanel1Layout.createSequentialGroup()
                         .add(29, 29, 29)
-                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                            .add(jLabel2)
-                            .add(jLabel1))))
-                .addContainerGap(61, Short.MAX_VALUE))
+                        .add(jLabel1))
+                    .add(jPanel1Layout.createSequentialGroup()
+                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jPanel1Layout.createSequentialGroup()
+                                .add(17, 17, 17)
+                                .add(jLabel3))
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jLabel4)
+                                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jLabel2))))
+                        .add(18, 18, 18)
+                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                                .add(fieldNome, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
+                                .add(fieldQuant))
+                            .add(btnCadastrar))))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -132,19 +120,17 @@ public class Cadastro extends javax.swing.JFrame {
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel2)
                     .add(fieldNome, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(33, 33, 33)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel3)
                     .add(fieldQuant, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(26, 26, 26)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                .add(18, 18, 18)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jLabel4)
-                    .add(fieldDesc, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(32, 32, 32)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(btnCadastrar)
-                    .add(btnSelect))
-                .addContainerGap(39, Short.MAX_VALUE))
+                    .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(18, 18, 18)
+                .add(btnCadastrar)
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
@@ -167,35 +153,39 @@ public class Cadastro extends javax.swing.JFrame {
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
         // TODO add your handling code here:
-        Conexao dbCon = new Conexao();
-        try {
-            dbCon.cadastrarProduto(fieldNome.getText(), fieldDesc.getText(), fieldQuant.getText());
-        } catch (SQLException | ClassNotFoundException ex) {
-            Logger.getLogger(Cadastro.class.getName()).log(Level.SEVERE, null, ex);
-        }
-            
-        
-    }//GEN-LAST:event_btnCadastrarActionPerformed
 
-    private void fieldDescActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldDescActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fieldDescActionPerformed
+        if ((fieldNome.getText().equals(""))||(fieldQuant.getText().equals(""))||(fieldDesc.getText().equals(""))) {
+
+            JOptionPane.showMessageDialog(null, "Todos os campos devem ser preenchidos.");
+
+        } else {
+
+            Conexao dbCon = new Conexao();
+            try {
+                dbCon.cadastrarProduto(fieldNome.getText(), fieldQuant.getText(), fieldDesc.getText());
+            } catch (SQLException | ClassNotFoundException ex) {
+                Logger.getLogger(Cadastro.class.getName()).log(Level.SEVERE, null, ex);
+
+                JOptionPane.showMessageDialog(null, "Ocorreu um Erro!");
+            }
+
+            try {
+                dbCon.getTabelaCadastro();
+            } catch (    SQLException | ClassNotFoundException ex) {
+                Logger.getLogger(Cadastro.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            fieldNome.setText("");
+            fieldQuant.setText("");
+            fieldDesc.setText("");
+
+            this.setVisible(false);
+        }
+    }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void fieldQuantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldQuantActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_fieldQuantActionPerformed
-
-    private void btnSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectActionPerformed
-        // TODO add your handling code here:
-        Conexao dbCon = new Conexao();
-        try {        
-            dbCon.getConnection();
-        } catch (SQLException | ClassNotFoundException ex) {
-            Logger.getLogger(Cadastro.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        
-    }//GEN-LAST:event_btnSelectActionPerformed
 
     /**
      * @param args the command line arguments
@@ -227,14 +217,13 @@ public class Cadastro extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Cadastro().setVisible(true);
+                new Cadastro().setVisible(true);               
             }
-        });
+        });        
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCadastrar;
-    private javax.swing.JButton btnSelect;
-    public javax.swing.JTextField fieldDesc;
+    private javax.swing.JTextArea fieldDesc;
     public javax.swing.JTextField fieldNome;
     public javax.swing.JTextField fieldQuant;
     private javax.swing.JLabel jLabel1;
@@ -242,5 +231,6 @@ public class Cadastro extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

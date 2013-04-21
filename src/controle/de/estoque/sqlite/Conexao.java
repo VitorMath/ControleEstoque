@@ -34,7 +34,6 @@ public class Conexao {
 
     private Connection conn;
     private Statement stm;
-    public static String ClienteAntesEditar;
     public static int total;
 
     public void SQLite() throws SQLException, ClassNotFoundException {
@@ -46,35 +45,33 @@ public class Conexao {
     public void initDB() throws SQLException, ClassNotFoundException {
 
         this.SQLite();
-        //Remove e cria a tabela a cada execução. Mero exemplo			
+        //Se não existe, cria as tabelas a cada execução.		
         this.stm.executeUpdate("CREATE TABLE IF NOT EXISTS produtos ("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + "nome varchar(40),"
                 + "quant integer,"
                 + "descricao varchar(300))");
 
+        this.stm.executeUpdate("CREATE TABLE IF NOT EXISTS login ("
+                + "usuario varchar(30) PRIMARY KEY,"
+                + "senha varchar(30))");
+
+        this.stm.executeUpdate("CREATE TABLE IF NOT EXISTS historico ("
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "idproduto INTEGER,"
+                + "nome varchar(40),"
+                + "quant_anterior INTEGER,"
+                + "quant_alterada INTEGER,"
+                + "quant_atual INTEGER,"
+                + "data date)");
+
+//        this.stm.executeUpdate("INSERT INTO login VALUES('vitor','mateus')");
+
+//        this.stm.execute("DROP TABLE produtos");
+//        this.stm.execute("DROP TABLE login");
+//        this.stm.execute("DROP TABLE historico");
+
         //JOptionPane.showMessageDialog(null, "Banco Iniciado");
-    }
-
-    public String getConnection() throws SQLException, ClassNotFoundException {
-        this.SQLite();
-        this.stm = this.conn.createStatement();
-
-        String sql = "SELECT * FROM produtos";
-        ResultSet rs = stm.executeQuery(sql);
-
-        Vector objeto = new Vector();
-        while (rs.next()) {
-            objeto.add(rs.getString("nome"));
-
-        }
-
-        System.out.println(objeto.size());
-
-
-        System.out.println(objeto.toString());
-
-        return objeto.toString();
     }
 
     public void cadastrarProduto(String NomeProduto, String QuantProduto, String DescProduto) throws SQLException, ClassNotFoundException {
@@ -87,7 +84,12 @@ public class Conexao {
                 + "','" + QuantProduto
                 + "','" + DescProduto + "');");
 
-        JOptionPane.showMessageDialog(null, "Valores inseridos com sucesso.");
+        System.out.println("INSERT INTO produtos VALUES ("
+                + "null"
+                + ",'" + NomeProduto
+                + "','" + QuantProduto
+                + "','" + DescProduto + "');");
+        //JOptionPane.showMessageDialog(null, "Valores inseridos com sucesso.");
 
     }
 
@@ -108,8 +110,16 @@ public class Conexao {
         while (rs.next()) {
             id.add(rs.getString("id"));
             nome.add(rs.getString("nome"));
-            quant.add(rs.getString("descricao"));  //Esta invertido por que assim funciona e ponto!!!
-            descri.add(rs.getString("quant"));
+            quant.add(rs.getString("quant"));
+            descri.add(rs.getString("descricao"));
+        }
+
+        Janela.fieldFiltro.setText(""); //Apenas para limpar o campo do Filtro.
+
+        int rows = Janela.tabelaEstoque.getRowCount();
+
+        for (int i = 0; i < rows; i++) {
+            ((DefaultTableModel) Janela.tabelaEstoque.getModel()).removeRow(0);
         }
 
         int tamanhoVetor = nome.size();
@@ -118,6 +128,179 @@ public class Conexao {
             ((DefaultTableModel) Janela.tabelaEstoque.getModel()).addRow(new String[]{id.get(i).toString(), nome.get(i).toString(), quant.get(i).toString(), descri.get(i).toString()});
         }
         return null;
+    }
+
+    public String getListaProdutos() throws SQLException, ClassNotFoundException {
+
+        Vector id = new Vector();
+        Vector nome = new Vector();
+        Vector quant = new Vector();
+        Vector descri = new Vector();
+
+        this.SQLite();
+        this.stm = this.conn.createStatement();
+
+        String sql = "SELECT * FROM produtos";
+        ResultSet rs = stm.executeQuery(sql);
+
+
+        while (rs.next()) {
+            id.add(rs.getString("id"));
+            nome.add(rs.getString("nome"));
+            quant.add(rs.getString("quant"));
+            descri.add(rs.getString("descricao"));
+        }
+
+        int rows = ListaProdutos.tabelaListaProdutos.getRowCount();
+
+        for (int i = 0; i < rows; i++) {
+            ((DefaultTableModel) ListaProdutos.tabelaListaProdutos.getModel()).removeRow(0);
+        }
+
+        int tamanhoVetor = nome.size();
+
+        for (int i = 0; i < tamanhoVetor; i++) {
+            ((DefaultTableModel) ListaProdutos.tabelaListaProdutos.getModel()).addRow(new String[]{id.get(i).toString(), nome.get(i).toString(), quant.get(i).toString(), descri.get(i).toString()});
+        }
+        return null;
+    }
+    
+    public String filtrarTabelaEstoque(String filtro) throws SQLException, ClassNotFoundException {
+
+        Vector id = new Vector();
+        Vector nome = new Vector();
+        Vector quant = new Vector();
+        Vector descri = new Vector();
+
+        this.SQLite();
+        this.stm = this.conn.createStatement();
+
+        String sql = "SELECT * FROM produtos WHERE nome LIKE '" + filtro + "%'";
+        ResultSet rs = stm.executeQuery(sql);
+
+
+        while (rs.next()) {
+            id.add(rs.getString("id"));
+            nome.add(rs.getString("nome"));
+            quant.add(rs.getString("quant"));
+            descri.add(rs.getString("descricao"));
+        }
+
+        int rows = Janela.tabelaEstoque.getRowCount();
+
+        for (int i = 0; i < rows; i++) {
+            ((DefaultTableModel) Janela.tabelaEstoque.getModel()).removeRow(0);
+        }
+
+        int tamanhoVetor = nome.size();
+
+        for (int i = 0; i < tamanhoVetor; i++) {
+            ((DefaultTableModel) Janela.tabelaEstoque.getModel()).addRow(new String[]{id.get(i).toString(), nome.get(i).toString(), quant.get(i).toString(), descri.get(i).toString()});
+        }
+        return null;
+    }
+
+    public String getTabelaCadastro() throws SQLException, ClassNotFoundException {
+
+        Vector id = new Vector();
+        Vector nome = new Vector();
+        Vector descri = new Vector();
+
+        this.SQLite();
+        this.stm = this.conn.createStatement();
+
+        String sql = "SELECT * FROM produtos";
+        ResultSet rs = stm.executeQuery(sql);
+
+
+        while (rs.next()) {
+            id.add(rs.getString("id"));
+            nome.add(rs.getString("nome"));
+            descri.add(rs.getString("descricao"));
+        }
+
+        int rows = Janela.tabelaCadastro.getRowCount();
+
+        for (int i = 0; i < rows; i++) {
+            ((DefaultTableModel) Janela.tabelaCadastro.getModel()).removeRow(0);
+        }
+
+        int tamanhoVetor = nome.size();
+
+        for (int i = 0; i < tamanhoVetor; i++) {
+            ((DefaultTableModel) Janela.tabelaCadastro.getModel()).addRow(new String[]{id.get(i).toString(), nome.get(i).toString(), descri.get(i).toString()});
+        }
+        return null;
+    }
+
+    public String getTabelaHistorico() throws SQLException, ClassNotFoundException {
+
+        Vector idproduto = new Vector();
+        Vector nome = new Vector();
+        Vector quantAnterior = new Vector();
+        Vector quantAlterada = new Vector();
+        Vector quantAtual = new Vector();
+        Vector data = new Vector();
+
+        this.SQLite();
+        this.stm = this.conn.createStatement();
+
+        String sql = "SELECT * FROM historico";
+        ResultSet rs = stm.executeQuery(sql);
+
+
+        while (rs.next()) {
+            idproduto.add(rs.getString("id"));
+            nome.add(rs.getString("nome"));
+            quantAnterior.add(rs.getString("quant_anterior"));
+            quantAlterada.add(rs.getString("quant_alterada"));
+            quantAtual.add(rs.getString("quant_atual"));
+            data.add(rs.getString("data"));
+        }
+
+        int rows = Janela.tabelaHistorico.getRowCount();
+
+        for (int i = 0; i < rows; i++) {
+            ((DefaultTableModel) Janela.tabelaCadastro.getModel()).removeRow(0);
+        }
+        
+        int tamanhoVetor = nome.size();
+
+        for (int i = 0; i < tamanhoVetor; i++) {
+            ((DefaultTableModel) Janela.tabelaHistorico.getModel()).addRow(new String[]{
+                        idproduto.get(i).toString(),
+                        nome.get(i).toString(),
+                        quantAnterior.get(i).toString(),
+                        quantAlterada.get(i).toString(),
+                        quantAtual.get(i).toString(),
+                        data.get(i).toString()});
+        }
+        return null;
+    }
+
+    public String getSenha(String usuario) throws SQLException, ClassNotFoundException {
+        this.SQLite();
+        this.stm = this.conn.createStatement();
+
+        String sql = "SELECT senha FROM login WHERE usuario = '" + usuario + "'";
+        //String sql = "SELECT senha FROM login";
+
+        ResultSet rs = stm.executeQuery(sql);
+
+        Vector objeto = new Vector();
+        while (rs.next()) {
+            objeto.add(rs.getString("senha"));
+
+        }
+        String resultado = objeto.toString();
+        return resultado;
+    }
+
+    public void modificarEstoque(String id) throws SQLException, ClassNotFoundException {
+        this.SQLite();
+
+        this.stm.executeQuery("");
+
     }
 }
 //public static String getConnection(String comand) throws SQLException {
