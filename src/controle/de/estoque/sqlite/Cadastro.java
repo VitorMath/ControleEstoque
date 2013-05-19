@@ -176,8 +176,7 @@ public class Cadastro extends javax.swing.JFrame {
             }
             
             fieldNome.setText("");
-            fieldQuant.setText("");
-            fieldDesc.setText("");
+             
 
             this.setVisible(false);
         }

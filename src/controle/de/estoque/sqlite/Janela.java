@@ -4,10 +4,14 @@
  */
 package controle.de.estoque.sqlite;
 
+import java.sql.Date;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
 
@@ -37,11 +41,11 @@ public class Janela extends javax.swing.JFrame {
         painel = new javax.swing.JPanel();
         tabEstoque = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
-        btnAtualizar = new javax.swing.JButton();
-        scrollPane = new javax.swing.JScrollPane();
-        tabelaEstoque = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
         fieldFiltro = new javax.swing.JTextField();
+        btnAtualizar = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tabelaEstoque = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         radioAcre = new javax.swing.JRadioButton();
         radioDimi = new javax.swing.JRadioButton();
@@ -56,13 +60,15 @@ public class Janela extends javax.swing.JFrame {
         btnBuscarProduto = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         labelData = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        labelIDProduto = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnNovoProduto = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabelaCadastro = new javax.swing.JTable();
+        jLabel7 = new javax.swing.JLabel();
+        fieldFiltroCadastro = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tabelaHistorico = new javax.swing.JTable();
@@ -78,6 +84,14 @@ public class Janela extends javax.swing.JFrame {
             }
         });
 
+        jLabel3.setText("Filtro:");
+
+        fieldFiltro.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                fieldFiltroKeyReleased(evt);
+            }
+        });
+
         btnAtualizar.setText("Atualizar");
         btnAtualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -86,7 +100,7 @@ public class Janela extends javax.swing.JFrame {
         });
 
         tabelaEstoque.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][]{
+            new Object [][] {
                 //        {null, null, null, null},
                 //        {null, null, null, null},
                 //        {null, null, null, null},
@@ -96,15 +110,8 @@ public class Janela extends javax.swing.JFrame {
                 "ID", "Nome", "Quantidade", "Descrição"
             }
         ));
-        scrollPane.setViewportView(tabelaEstoque);
-
-        jLabel3.setText("Filtro:");
-
-        fieldFiltro.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                fieldFiltroKeyReleased(evt);
-            }
-        });
+        tabelaEstoque.setEnabled(false);
+        jScrollPane3.setViewportView(tabelaEstoque);
 
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -113,15 +120,14 @@ public class Janela extends javax.swing.JFrame {
             .add(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(scrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE)
+                    .add(jScrollPane3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 432, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jPanel1Layout.createSequentialGroup()
                         .add(btnAtualizar)
                         .add(30, 30, 30)
                         .add(jLabel3)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(fieldFiltro, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 149, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .add(fieldFiltro, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 149, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(8, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -132,8 +138,8 @@ public class Janela extends javax.swing.JFrame {
                     .add(jLabel3)
                     .add(fieldFiltro, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(scrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE)
-                .addContainerGap())
+                .add(jScrollPane3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 307, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         tabEstoque.addTab("Estoque Atual", jPanel1);
@@ -165,11 +171,7 @@ public class Janela extends javax.swing.JFrame {
 
         jLabel1.setText("Produto:");
 
-        labelNomeProduto.setText("jLabel3");
-
         jLabel4.setText("Quant Atual:");
-
-        labelQuantProduto.setText("jLabel5");
 
         btnBuscarProduto.setText("Buscar Produto");
         btnBuscarProduto.addActionListener(new java.awt.event.ActionListener() {
@@ -180,7 +182,7 @@ public class Janela extends javax.swing.JFrame {
 
         jLabel6.setText("Data:");
 
-        labelData.setText("jLabel7");
+        jLabel5.setText("ID Produto:");
 
         org.jdesktop.layout.GroupLayout jPanel3Layout = new org.jdesktop.layout.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -189,58 +191,71 @@ public class Janela extends javax.swing.JFrame {
             .add(jPanel3Layout.createSequentialGroup()
                 .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jPanel3Layout.createSequentialGroup()
-                        .add(47, 47, 47)
-                        .add(btnModificar)
-                        .add(90, 90, 90)
-                        .add(btnLimpar))
+                        .add(227, 227, 227)
+                        .add(btnLimpar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 96, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(0, 0, Short.MAX_VALUE))
                     .add(jPanel3Layout.createSequentialGroup()
                         .add(24, 24, 24)
                         .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(jPanel3Layout.createSequentialGroup()
-                                .add(labelQuant)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(spinnerQuant, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 70, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(jPanel3Layout.createSequentialGroup()
+                                        .add(jLabel6)
+                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                        .add(labelData))
+                                    .add(jPanel3Layout.createSequentialGroup()
+                                        .add(radioAcre)
+                                        .add(17, 17, 17)
+                                        .add(radioDimi))
+                                    .add(jPanel3Layout.createSequentialGroup()
+                                        .add(jLabel4)
+                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                                        .add(labelQuantProduto))
+                                    .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                                        .add(btnModificar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 123, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                        .add(jPanel3Layout.createSequentialGroup()
+                                            .add(labelQuant)
+                                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                            .add(spinnerQuant, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 70, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
+                                .add(0, 102, Short.MAX_VALUE))
                             .add(jPanel3Layout.createSequentialGroup()
-                                .add(radioAcre)
-                                .add(17, 17, 17)
-                                .add(radioDimi))
-                            .add(jPanel3Layout.createSequentialGroup()
-                                .add(jLabel4)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                                .add(labelQuantProduto))
-                            .add(jPanel3Layout.createSequentialGroup()
-                                .add(jLabel6)
-                                .add(18, 18, 18)
-                                .add(labelData))
-                            .add(jPanel3Layout.createSequentialGroup()
-                                .add(jLabel1)
-                                .add(18, 18, 18)
-                                .add(labelNomeProduto)
-                                .add(61, 61, 61)
-                                .add(btnBuscarProduto)))))
-                .addContainerGap(117, Short.MAX_VALUE))
+                                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(jPanel3Layout.createSequentialGroup()
+                                        .add(jLabel5)
+                                        .add(13, 13, 13)
+                                        .add(labelIDProduto, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 19, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                                    .add(jPanel3Layout.createSequentialGroup()
+                                        .add(jLabel1)
+                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                                        .add(labelNomeProduto)))
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .add(btnBuscarProduto, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 122, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(9, 9, 9)))))
+                .add(58, 58, 58))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel3Layout.createSequentialGroup()
+                .add(31, 31, 31)
                 .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jPanel3Layout.createSequentialGroup()
-                        .add(36, 36, 36)
-                        .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                        .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(labelIDProduto, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 16, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(jLabel5))
+                        .add(13, 13, 13)
+                        .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(jLabel1)
                             .add(labelNomeProduto)))
-                    .add(jPanel3Layout.createSequentialGroup()
-                        .add(39, 39, 39)
-                        .add(btnBuscarProduto)))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(btnBuscarProduto, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 59, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(8, 8, 8)
+                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jLabel4)
                     .add(labelQuantProduto))
                 .add(18, 18, 18)
-                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jLabel6)
                     .add(labelData))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 74, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 45, Short.MAX_VALUE)
                 .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(radioAcre)
                     .add(radioDimi))
@@ -248,10 +263,10 @@ public class Janela extends javax.swing.JFrame {
                 .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(spinnerQuant, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(labelQuant))
-                .add(28, 28, 28)
+                .add(26, 26, 26)
                 .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(btnModificar)
-                    .add(btnLimpar))
+                    .add(btnModificar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 45, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(btnLimpar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 45, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(22, 22, 22))
         );
 
@@ -259,18 +274,14 @@ public class Janela extends javax.swing.JFrame {
 
         tabEstoque.addTab("Modificar Estoque", jPanel3);
 
-        jButton1.setText("Novo");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnNovoProduto.setText("Novo Produto");
+        btnNovoProduto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnNovoProdutoActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Editar");
-
-        jButton3.setText("Excluir");
-
-        jLabel2.setText("Itens Cadastrados:");
+        jLabel2.setText("Selecione um produto para edita-lo ou excluir-lo:");
 
         tabelaCadastro.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -283,40 +294,54 @@ public class Janela extends javax.swing.JFrame {
                 "ID", "Nome", "Descrição"
             }
         ));
+        tabelaCadastro.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelaCadastroMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tabelaCadastro);
+
+        jLabel7.setText("Filtro:");
+
+        fieldFiltroCadastro.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                fieldFiltroCadastroKeyReleased(evt);
+            }
+        });
 
         org.jdesktop.layout.GroupLayout jPanel4Layout = new org.jdesktop.layout.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel4Layout.createSequentialGroup()
-                .add(19, 19, 19)
+                .add(23, 23, 23)
                 .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jPanel4Layout.createSequentialGroup()
-                        .add(6, 6, 6)
-                        .add(jLabel2))
                     .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 385, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jPanel4Layout.createSequentialGroup()
-                        .add(jButton1)
-                        .add(78, 78, 78)
-                        .add(jButton2)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                        .add(jButton3)))
-                .addContainerGap(52, Short.MAX_VALUE))
+                        .add(40, 40, 40)
+                        .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                            .add(jPanel4Layout.createSequentialGroup()
+                                .add(btnNovoProduto)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                                .add(jLabel7)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                                .add(fieldFiltroCadastro))
+                            .add(jLabel2))))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jButton1)
-                    .add(jButton2)
-                    .add(jButton3))
+                    .add(btnNovoProduto, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 29, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jLabel7)
+                    .add(fieldFiltroCadastro, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jLabel2)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(12, 12, 12)
                 .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 260, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         tabEstoque.addTab("Cadastro", jPanel4);
@@ -341,14 +366,14 @@ public class Janela extends javax.swing.JFrame {
             jPanel5Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE)
+                .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel5Layout.createSequentialGroup()
                 .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 346, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(0, 0, Short.MAX_VALUE))
+                .add(0, 9, Short.MAX_VALUE))
         );
 
         tabEstoque.addTab("Histórico", jPanel5);
@@ -358,29 +383,23 @@ public class Janela extends javax.swing.JFrame {
         painelLayout.setHorizontalGroup(
             painelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(painelLayout.createSequentialGroup()
-                .add(tabEstoque, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 477, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(tabEstoque, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 467, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(0, 0, Short.MAX_VALUE))
         );
         painelLayout.setVerticalGroup(
             painelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(painelLayout.createSequentialGroup()
-                .add(tabEstoque, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(0, 0, Short.MAX_VALUE))
+            .add(tabEstoque, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 401, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
         );
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .add(painel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(0, 0, Short.MAX_VALUE))
+            .add(painel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .add(painel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(0, 0, Short.MAX_VALUE))
+            .add(painel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -392,35 +411,96 @@ public class Janela extends javax.swing.JFrame {
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         // TODO add your handling code here:
+        Integer quantidadeSpinner = Integer.parseInt(spinnerQuant.getValue().toString());
 
-        if (radioAcre.isSelected() && radioDimi.isSelected()) {
-            System.out.println("ERROR! Os dois botões estão selecionados.");
-        } else if (!radioAcre.isSelected() && radioDimi.isSelected()) {
-            System.out.println("Diminuir!");
-        } else if (radioAcre.isSelected() && !radioDimi.isSelected()) {
-            System.out.println("Acrescentar!");
-        } else if (!radioAcre.isSelected() && !radioDimi.isSelected()) {
-            System.out.println("Nenhum Selecionado!");
+        if (labelIDProduto.getText() == "") {
+            JOptionPane.showMessageDialog(null, "Busque um produto!");
+        } else if (quantidadeSpinner == 0) {
+            JOptionPane.showMessageDialog(null, "Selecione a quantidade desejada.");
+        } else {
+
+            Integer quantidadeAtual = Integer.parseInt(labelQuantProduto.getText().toString());
+            Integer quantFinal = null;
+
+            if (radioAcre.isSelected() && radioDimi.isSelected()) {
+                System.out.println("ERROR! Os dois botões estão selecionados.");
+
+            } else if (!radioAcre.isSelected() && radioDimi.isSelected()) {
+                //Diminuir!
+                if (quantidadeAtual >= quantidadeSpinner) {
+                    //System.out.println("Diminuir " + quantidadeSpinner);
+
+                    quantFinal = quantidadeAtual - quantidadeSpinner;
+
+                    Conexao dbCon = new Conexao();
+                    try {
+                        dbCon.modificarEstoque(labelIDProduto.getText(), quantFinal);
+                    } catch (SQLException | ClassNotFoundException ex) {
+                        Logger.getLogger(Janela.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    try {
+                        dbCon.registrarHistorico(labelIDProduto.getText(), labelNomeProduto.getText(), quantidadeAtual.toString(), quantidadeSpinner.toString(), quantFinal.toString());
+                    } catch (SQLException | ClassNotFoundException ex) {
+                        Logger.getLogger(Janela.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    //String idProduto, String nomeProduto, String quantAnterior, String quantAlterada, String quantAtual
+
+                    labelIDProduto.setText("");
+                    labelNomeProduto.setText("");
+                    labelQuantProduto.setText("");
+                    spinnerQuant.setValue(0);
+                    tabEstoque.setSelectedIndex(0);
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "Quantidade em Estoque insuficiente!");
+                }
+
+            } else if (radioAcre.isSelected() && !radioDimi.isSelected()) {
+                //Acrescentar!
+                quantFinal = quantidadeAtual + quantidadeSpinner;
+
+                Conexao dbCon = new Conexao();
+                try {
+                    dbCon.modificarEstoque(labelIDProduto.getText(), quantFinal);
+                } catch (SQLException | ClassNotFoundException ex) {
+                    Logger.getLogger(Janela.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                try {
+                    dbCon.registrarHistorico(labelIDProduto.getText(), labelNomeProduto.getText(), quantidadeAtual.toString(), quantidadeSpinner.toString(), quantFinal.toString());
+                } catch (SQLException | ClassNotFoundException ex) {
+                    Logger.getLogger(Janela.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                labelIDProduto.setText("");
+                labelNomeProduto.setText("");
+                labelQuantProduto.setText("");
+                spinnerQuant.setValue(0);
+                tabEstoque.setSelectedIndex(0);
+
+            } else if (!radioAcre.isSelected() && !radioDimi.isSelected()) {
+                //System.out.println("Nenhum Selecionado!");
+                JOptionPane.showMessageDialog(null, "Selecione a operação desejada!");
+            }
         }
-
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
         // TODO add your handling code here:
+        labelIDProduto.setText("");
+        labelNomeProduto.setText("");
+        labelQuantProduto.setText("");
+        spinnerQuant.setValue(0);
     }//GEN-LAST:event_btnLimparActionPerformed
 
     private void btnAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtualizarActionPerformed
         // TODO add your handling code here:
 
-        //tabelaEstoque.setValueAt("Hello!", 1, 2);
-
-        //((DefaultTableModel)tabelaEstoque.getModel()).addRow(vetor); 
-
-//        int rows = tabelaEstoque.getRowCount();
-//
-//        for (int i = 0; i < rows; i++) {
-//            ((DefaultTableModel) tabelaEstoque.getModel()).removeRow(0);
-//        }
+        Date dataHoje = new Date(System.currentTimeMillis());
+        SimpleDateFormat formatarDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        String oi = (formatarDate.format(dataHoje)).toString();
+        System.out.println(oi);
 
         Conexao dbCon = new Conexao();
         try {
@@ -431,12 +511,12 @@ public class Janela extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnAtualizarActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnNovoProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoProdutoActionPerformed
         // TODO add your handling code here:
         Cadastro janelaCadastro = new Cadastro();
         janelaCadastro.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         janelaCadastro.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnNovoProdutoActionPerformed
 
     private void btnBuscarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarProdutoActionPerformed
         // TODO add your handling code here:
@@ -468,7 +548,11 @@ public class Janela extends javax.swing.JFrame {
                     Logger.getLogger(Janela.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 break;
-            //case 1:break;
+            case 1:
+                Date dataHoje = new Date(System.currentTimeMillis());
+                SimpleDateFormat formatarDate = new SimpleDateFormat("dd/MM/yyyy");
+                Janela.labelData.setText(formatarDate.format(dataHoje));
+                break;
             case 2:
                 try {
                     dbCon.getTabelaCadastro();
@@ -496,6 +580,34 @@ public class Janela extends javax.swing.JFrame {
             Logger.getLogger(Janela.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_fieldFiltroKeyReleased
+
+    private void tabelaCadastroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaCadastroMouseClicked
+        // TODO add your handling code here:
+        EditarProduto editarProduto = new EditarProduto();
+        editarProduto.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
+        int row = tabelaCadastro.getSelectedRow();
+        String id = (String) tabelaCadastro.getValueAt(row, 0);
+
+        Conexao dbCon = new Conexao();
+        try {
+            dbCon.getProdutoAtualizar(id);
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(ListaProdutos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        editarProduto.setVisible(true);
+    }//GEN-LAST:event_tabelaCadastroMouseClicked
+
+    private void fieldFiltroCadastroKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fieldFiltroCadastroKeyReleased
+        // TODO add your handling code here:
+        Conexao dbCon = new Conexao();
+        try {
+            dbCon.filtrarTabelaCadastro(fieldFiltroCadastro.getText());
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(ListaProdutos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_fieldFiltroCadastroKeyReleased
 
     /**
      * @param args the command line arguments
@@ -536,30 +648,32 @@ public class Janela extends javax.swing.JFrame {
     private javax.swing.JButton btnBuscarProduto;
     private javax.swing.JButton btnLimpar;
     private javax.swing.JButton btnModificar;
+    private javax.swing.JButton btnNovoProduto;
     public static javax.swing.JTextField fieldFiltro;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    public static javax.swing.JTextField fieldFiltroCadastro;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JLabel labelData;
-    private javax.swing.JLabel labelNomeProduto;
+    private javax.swing.JScrollPane jScrollPane3;
+    private static javax.swing.JLabel labelData;
+    public static javax.swing.JLabel labelIDProduto;
+    public static javax.swing.JLabel labelNomeProduto;
     private javax.swing.JLabel labelQuant;
-    private javax.swing.JLabel labelQuantProduto;
+    public static javax.swing.JLabel labelQuantProduto;
     private javax.swing.JPanel painel;
     private javax.swing.JRadioButton radioAcre;
     private javax.swing.JRadioButton radioDimi;
     private javax.swing.ButtonGroup radioGroup;
-    private javax.swing.JScrollPane scrollPane;
     private javax.swing.JSpinner spinnerQuant;
     private javax.swing.JTabbedPane tabEstoque;
     public static javax.swing.JTable tabelaCadastro;

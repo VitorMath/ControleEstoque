@@ -4,6 +4,10 @@
  */
 package controle.de.estoque.sqlite;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author vitorbrito
@@ -29,6 +33,8 @@ public class ListaProdutos extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tabelaListaProdutos = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        fieldFiltroLista = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -43,34 +49,84 @@ public class ListaProdutos extends javax.swing.JFrame {
                 "ID", "Nome", "Quant Atual", "Descrição"
             }
         ));
+        tabelaListaProdutos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelaListaProdutosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tabelaListaProdutos);
 
-        jLabel1.setText("Dê dois cliques para selecionar o produto.");
+        jLabel1.setText("Selecione o produto desejado na tabela abaixo.");
+
+        jLabel2.setText("Filtro:");
+
+        fieldFiltroLista.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                fieldFiltroListaKeyReleased(evt);
+            }
+        });
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 396, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(0, 0, Short.MAX_VALUE))
-            .add(layout.createSequentialGroup()
-                .add(17, 17, 17)
-                .add(jLabel1)
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(layout.createSequentialGroup()
+                        .add(17, 17, 17)
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 396, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(jLabel1)))
+                    .add(layout.createSequentialGroup()
+                        .add(44, 44, 44)
+                        .add(jLabel2)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                        .add(fieldFiltroLista, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 151, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(10, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
                 .add(10, 10, 10)
                 .add(jLabel1)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(fieldFiltroLista, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jLabel2))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 292, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .add(14, 14, 14))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void tabelaListaProdutosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaListaProdutosMouseClicked
+        // TODO add your handling code here:
+
+        int row = tabelaListaProdutos.getSelectedRow();
+        String id = (String) tabelaListaProdutos.getValueAt(row, 0);
+
+        Conexao dbCon = new Conexao();
+        try {
+            dbCon.getProduto(id);
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(ListaProdutos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        this.dispose();
+        
+    }//GEN-LAST:event_tabelaListaProdutosMouseClicked
+
+    private void fieldFiltroListaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fieldFiltroListaKeyReleased
+        // TODO add your handling code here:
+        Conexao dbCon = new Conexao();
+        try {
+            dbCon.filtrarListaProdutos(fieldFiltroLista.getText());
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(Janela.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_fieldFiltroListaKeyReleased
 
     /**
      * @param args the command line arguments
@@ -107,7 +163,9 @@ public class ListaProdutos extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField fieldFiltroLista;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     public static javax.swing.JTable tabelaListaProdutos;
     // End of variables declaration//GEN-END:variables
