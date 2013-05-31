@@ -70,14 +70,43 @@ public class Conexao {
 
 //        this.stm.execute("DROP TABLE produtos");
 //        this.stm.execute("DROP TABLE login");
-//       this.stm.execute("DROP TABLE historico");
+//        this.stm.execute("DROP TABLE historico");
 
         //JOptionPane.showMessageDialog(null, "Banco Iniciado");
+
+        cadastraPrimeiraSenha();
 
         this.stm.close();
 
     }
 
+    public String cadastraPrimeiraSenha() throws SQLException, ClassNotFoundException {
+
+        this.SQLite();
+        this.stm = this.conn.createStatement();
+
+        String sql = "SELECT * FROM login";
+        ResultSet rs = stm.executeQuery(sql);
+
+        Vector vetor = new Vector();
+
+        while (rs.next()) {
+            vetor.add(rs.getString("usuario"));
+        }
+        rs.close();
+
+        if (vetor.size() <= 0) {
+            String comandSQL = "INSERT INTO login VALUES ('admin','admin');";
+            
+            stm.execute(comandSQL);
+            
+            this.stm.close();
+        }
+
+        this.stm.close();
+        return null;
+    }
+    
     public void cadastrarProduto(String NomeProduto, String QuantProduto, String DescProduto) throws SQLException, ClassNotFoundException {
 
         this.SQLite();
@@ -262,7 +291,7 @@ public class Conexao {
         }
 
         Janela.fieldFiltroCadastro.setText(""); //Apenas para limpar o filtro da aba de Cadastro.
-        
+
         rs.close();
 
         int rows = Janela.tabelaCadastro.getRowCount();
@@ -332,6 +361,18 @@ public class Conexao {
 
         String resultado = objeto.toString();
         return resultado;
+    }
+
+    public String modificarSenha(String novoUsuario, String novaSenha, String usuarioAtual) throws SQLException, ClassNotFoundException {
+        this.SQLite();
+        this.stm = this.conn.createStatement();
+
+        String comandSQL = "UPDATE login SET usuario = '" + novoUsuario + "', senha = '" + novaSenha + "' WHERE usuario = '" + usuarioAtual + "';";
+
+        stm.execute(comandSQL);
+
+        this.stm.close();
+        return null;
     }
 
     public String getProduto(String id) throws SQLException, ClassNotFoundException {
@@ -438,7 +479,7 @@ public class Conexao {
 
         this.stm.close();
     }
-    
+
     public String getTabelaHistorico() throws SQLException, ClassNotFoundException {
 
         Vector idproduto = new Vector();
@@ -485,5 +526,4 @@ public class Conexao {
         }
         return null;
     }
-    
 }

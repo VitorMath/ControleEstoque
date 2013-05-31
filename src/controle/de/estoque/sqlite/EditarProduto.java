@@ -185,7 +185,7 @@ public class EditarProduto extends javax.swing.JFrame {
         Object[] options = {"Cancelar", "Sim, tenho certeza"};
         option = JOptionPane.showOptionDialog(null, //0 = Primeira opção; 1 Segunda opção; -1 = JOptionPane fechado.
                 "Você tem certeza que deseja excluir este produto?\n"
-                + "Todos os dados dele serão excluidos permanentemente.\n",
+                + "Referências à este produto serão excluidas permanentemente!\n",
                 "Confirmação", JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 

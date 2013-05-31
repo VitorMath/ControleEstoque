@@ -281,7 +281,7 @@ public class Janela extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setText("Selecione um produto para edita-lo ou excluir-lo:");
+        jLabel2.setText("Selecione um produto para edita-lo ou exclui-lo:");
 
         tabelaCadastro.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

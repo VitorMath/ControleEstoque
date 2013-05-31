@@ -40,6 +40,7 @@ public class Login extends javax.swing.JFrame {
         fieldUsuario = new javax.swing.JTextField();
         btnEntrar = new javax.swing.JButton();
         fieldSenha = new javax.swing.JPasswordField();
+        btnModificarUsuario = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -50,6 +51,7 @@ public class Login extends javax.swing.JFrame {
 
         labelSenha.setText("Senha:");
 
+        fieldUsuario.setBounds(new java.awt.Rectangle(0, 0, 181, 0));
         fieldUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fieldUsuarioActionPerformed(evt);
@@ -63,9 +65,17 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
+        fieldSenha.setBounds(new java.awt.Rectangle(0, 0, 181, 0));
         fieldSenha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fieldSenhaActionPerformed(evt);
+            }
+        });
+
+        btnModificarUsuario.setText("Modificar Usuário");
+        btnModificarUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarUsuarioActionPerformed(evt);
             }
         });
 
@@ -77,23 +87,26 @@ public class Login extends javax.swing.JFrame {
                 .add(painelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(painelLayout.createSequentialGroup()
                         .add(105, 105, 105)
-                        .add(labelLogin)
-                        .add(0, 0, Short.MAX_VALUE))
+                        .add(labelLogin))
                     .add(painelLayout.createSequentialGroup()
                         .add(21, 21, 21)
-                        .add(painelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(labelUsuario)
+                        .add(painelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                            .add(painelLayout.createSequentialGroup()
+                                .add(painelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(labelUsuario)
+                                    .add(painelLayout.createSequentialGroup()
+                                        .add(11, 11, 11)
+                                        .add(labelSenha)))
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(painelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(fieldUsuario)
+                                    .add(fieldSenha)))
                             .add(painelLayout.createSequentialGroup()
                                 .add(11, 11, 11)
-                                .add(labelSenha)))
-                        .add(18, 18, 18)
-                        .add(painelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(painelLayout.createSequentialGroup()
-                                .add(btnEntrar)
-                                .add(0, 70, Short.MAX_VALUE))
-                            .add(fieldSenha)
-                            .add(fieldUsuario))))
-                .addContainerGap())
+                                .add(btnEntrar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 96, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(btnModificarUsuario, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 135, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
         painelLayout.setVerticalGroup(
             painelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -108,9 +121,11 @@ public class Login extends javax.swing.JFrame {
                 .add(painelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(labelSenha)
                     .add(fieldSenha, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(18, 18, 18)
-                .add(btnEntrar)
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(painelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(btnEntrar)
+                    .add(btnModificarUsuario))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
@@ -119,21 +134,26 @@ public class Login extends javax.swing.JFrame {
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
                 .add(painel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(13, Short.MAX_VALUE))
+                .add(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .add(painel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(0, 0, Short.MAX_VALUE))
+            .add(painel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void fieldUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldUsuarioActionPerformed
+    private void btnModificarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarUsuarioActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_fieldUsuarioActionPerformed
+        ModificarSenha janelaModificarSenha = new ModificarSenha();
+        janelaModificarSenha.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        janelaModificarSenha.setVisible(true);
+    }//GEN-LAST:event_btnModificarUsuarioActionPerformed
+
+    private void fieldSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldSenhaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_fieldSenhaActionPerformed
 
     private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
         String senha = null;
@@ -141,7 +161,7 @@ public class Login extends javax.swing.JFrame {
         if ((fieldSenha.getPassword().equals(null) || fieldUsuario.getText().equals(""))) {
 
             JOptionPane.showMessageDialog(null, "Usuário ou Senha incorretos.");
-            
+
         } else {
 
             Conexao dbCon = new Conexao();
@@ -163,18 +183,6 @@ public class Login extends javax.swing.JFrame {
                 senhaFinal = null;
 
                 new Janela().setVisible(true);
-
-//                try {
-//                    dbCon.getTabelaCadastro();  //Insere os dados na tabela do Cadastro.
-//                } catch (SQLException | ClassNotFoundException ex) {
-//                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//                try {
-//                    dbCon.getTabelaEstoque();   //Insere os dados na tabela do Estoque Atual.
-//                } catch (SQLException | ClassNotFoundException ex) {
-//                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-
                 this.dispose();
 
             } else {
@@ -190,9 +198,9 @@ public class Login extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnEntrarActionPerformed
 
-    private void fieldSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldSenhaActionPerformed
+    private void fieldUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldUsuarioActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_fieldSenhaActionPerformed
+    }//GEN-LAST:event_fieldUsuarioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -230,6 +238,7 @@ public class Login extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEntrar;
+    private javax.swing.JButton btnModificarUsuario;
     private javax.swing.JPasswordField fieldSenha;
     private javax.swing.JTextField fieldUsuario;
     private javax.swing.JLabel labelLogin;

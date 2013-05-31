@@ -427,7 +427,7 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel2">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Selecione um produto para edita-lo ou excluir-lo:"/>
+                    <Property name="text" type="java.lang.String" value="Selecione um produto para edita-lo ou exclui-lo:"/>
                   </Properties>
                 </Component>
                 <Container class="javax.swing.JScrollPane" name="jScrollPane1">
